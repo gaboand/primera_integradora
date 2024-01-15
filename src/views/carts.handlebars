@@ -1,0 +1,24 @@
+
+  <main class="cart__container">
+<div>
+  <h1 class="cart__title">CARRITO DE PRODUCTOS</h1>
+</div>
+
+<div class="cart__productList">
+  {{#each carts}}
+    <div class="cart__productCard">
+      <div class="cart__cardProduct__image">
+        <img src="{{this.thumbnail}}" alt="{{this.title}}" />
+      </div>
+      <div class="cart__cardProduct__info">
+        <h3 class="cart__nombreProducto">{{this.title}}</h3>
+        <p class="cart__detalleProducto">Descripcion: {{this.description}}</p>
+        <p class="cart__detalleProducto">Precio: ${{this.price}}</p>
+        <p class="cart__detalleProducto">Cantidad: {{this.quantity}}</p>
+      </div>
+      <div class="cart__cardProduct__delete">
+        <button class="cart__btnDelete">X</button>
+      </div>
+    </div>
+  {{/each}}
+</div>
