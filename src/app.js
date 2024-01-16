@@ -8,6 +8,7 @@ import viewsRouter from "./routes/views.router.js";
 import { __dirname } from "./utils.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import IndexRouter from "./routes/index.routes.js";
 
 dotenv.config();
 const app = express();
@@ -40,7 +41,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-//app.use("/", IndexRouter);// revisar, viene de la correccipn de Santiago
+app.use("/", IndexRouter);
 
 const server = app.listen(PORT, () => {
   console.log(`Servidor está corriendo en el puerto ${PORT}`);

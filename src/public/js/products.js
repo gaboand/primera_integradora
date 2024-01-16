@@ -4,42 +4,46 @@ const addProductBtn = document.getElementById("addProductBtn");
 const deleteProductBtn = document.getElementById("deleteProductBtn");
 
 addProductBtn.addEventListener("click", async () => {
-	const title = document.getElementById("title");
-	const description = document.getElementById("description");
-	const price = document.getElementById("price");
-	const thumbnail = document.getElementById("thumbnail");
-	const code = document.getElementById("code");
-	const stock = document.getElementById("stock");
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const price = document.getElementById("price").value;
+    const thumbnail = document.getElementById("thumbnail").value;
+    const code = document.getElementById("code").value;
+    const stock = document.getElementById("stock").value;
 
-	const product = {
-		title: title.value,
-		description: description.value,
-		price: price.value,
-		thumbnail: thumbnail.value,
-		code: code.value,
-		stock: stock.value,
-	};
+    const fsproduct = {
+        title: title,
+        description: description,
+        price: price,
+        thumbnail: thumbnail,
+        code: code,
+        stock: stock,
+    };
 
-    await fetch("/api/products", {
-		method: "POST",
-		body: JSON.stringify({ product }),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				reloadList(data.products);
-				alert("Producto agregado con éxito");
-			}
-		})
-		.catch((data) => {
-			alert(data.message);
-		});
+    try {
+        const response = await fetch("/api/fsproducts", {
+            method: "POST",
+            body: JSON.stringify(fsproduct),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-	document.getElementById("addForm").reset();
+        const data = await response.json();
+
+        if (data.success) {
+            reloadList(data.products);
+            alert("Producto agregado con éxito");
+        } else {
+            throw new Error(data.message || 'Error al agregar producto');
+        }
+    } catch (error) {
+        alert(error.message);
+    }
+
+    document.getElementById("addForm").reset();
 });
+
 
 deleteProductBtn.addEventListener("click", async () => {
 	const id = document.getElementById("productId");

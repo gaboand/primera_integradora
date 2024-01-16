@@ -22,27 +22,27 @@ export default class ProductsManager {
 		return true;
 	}
 
-	async addProduct(product) {
+	async addProduct(fsproduct) {
 		try {
 			if (!this.allFieldsAreValid) {
 				throw new Error("Missing data.");
 			}
 
-			console.log(product);
-			const products = await this.getProducts();
+			console.log(fsproduct);
+			const fsproducts = await this.getProducts();
 
-			if (products.find((existingProduct) => existingProduct.code === product.code)) {
+			if (fsproducts.find((existingProduct) => existingProduct.code === fsproduct.code)) {
 				throw new Error(`Product with code ${code} already exists`);
 			}
 
-			product.status = product.status ?? true;
+			fsproduct.status = fsproduct.status ?? true;
 
-			product.id = crypto.randomUUID();
+			fsproduct.id = crypto.randomUUID();
 
-			products.push(product);
+			fsproducts.push(fsproduct);
 
-			await this.#saveProducts(products);
-			return product;
+			await this.#saveProducts(fsproducts);
+			return fsproduct;
 		} catch (error) {
 			throw error;
 		}

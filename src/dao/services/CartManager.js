@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import fs from "fs";
-import ProductsManager from "./ProductsManager.js";
+import ProductsManager from "./ProductManager.js";
 
 const productsManager = new ProductsManager();
 
