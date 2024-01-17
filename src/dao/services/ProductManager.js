@@ -22,32 +22,6 @@ export default class ProductsManager {
 		return true;
 	}
 
-	async addProduct(fsproduct) {
-		try {
-			if (!this.allFieldsAreValid) {
-				throw new Error("Missing data.");
-			}
-
-			console.log(fsproduct);
-			const fsproducts = await this.getProducts();
-
-			if (fsproducts.find((existingProduct) => existingProduct.code === fsproduct.code)) {
-				throw new Error(`Product with code ${code} already exists`);
-			}
-
-			fsproduct.status = fsproduct.status ?? true;
-
-			fsproduct.id = crypto.randomUUID();
-
-			fsproducts.push(fsproduct);
-
-			await this.#saveProducts(fsproducts);
-			return fsproduct;
-		} catch (error) {
-			throw error;
-		}
-	}
-
 	async getProducts() {
 		try {
 			if (fs.existsSync(this.#filePath)) {
@@ -74,6 +48,7 @@ export default class ProductsManager {
 			throw error;
 		}
 	}
+
 
 	async deleteProductById(id) {
 		try {
@@ -117,6 +92,29 @@ export default class ProductsManager {
 			throw error;
 		}
 	}
+
+	async addProduct(product) {
+		try {
+			if (!this.allFieldsAreValid(product)) {
+				throw new Error("Missing data.");
+			}
+		const products = await this.getProducts();
+
+		if (products.find((existingProduct) => existingProduct.code === product.code)) {
+			throw new Error(`Product with code ${product.code} already exists`);
+		}
+
+		product.id = crypto.randomUUID();
+
+		products.push(product);
+
+		await this.#saveProducts(products);
+		return product;
+		} catch (error) {
+			throw error;
+		}
+	}
+
 
 	async #saveProducts(products) {
 		try {
