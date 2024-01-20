@@ -1,14 +1,14 @@
 import { Router } from "express";
-import  Messages from "../services/dbManager/message.js";
+import  MessagesDB from "../services/dbManager/messageDB.js";
 
 const messagesRouter = Router();
-const messages = new Messages();
+const messagesDB = new MessagesDB();
 
 
 messagesRouter.post ("/", async (req, res) => {
   const { user, message } = req.body;
   try{
-      const response = await message.createMesage({ user, message });
+      const response = await messagesDB.createMessage({ user, message });
       if(!response) {
         res.status(400).json({
           success: false,

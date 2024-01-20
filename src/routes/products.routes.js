@@ -1,13 +1,15 @@
 import express from "express";
 import ProductManager from "../services/fs/ProductManager.js";
+import ProductDB from "../services/dbManager/productDB.js";
 
-const productManager = new ProductManager();
 const productsRouter = express.Router();
+const productManager = new ProductManager();
+const productDB = new ProductDB();
 
 productsRouter.get("/", async (req, res) => {
 	try {
 		const { limit } = req.query;
-		const products = await productManager.getProducts();
+		const products = await productDB.getProducts();
 
 		if (products.length < 1) {
 			res.status(404).json({
@@ -33,7 +35,7 @@ productsRouter.get("/:pid", async (req, res) => {
 	try {
 		const { pid } = req.params;
 
-		const product = await productManager.getProductById(pid);
+		const product = await productDB.getProductsById(pid);
 
 		if (!product) {
 			res.status(404).json({
@@ -58,9 +60,9 @@ productsRouter.get("/:pid", async (req, res) => {
 
 productsRouter.post("/", async (req, res) => {
 	try {
-		const { product } = req.body;
+		const productData = req.body;
 		console.log(req);
-		const newProduct = await productManager.addProduct(product);
+		const newProduct = await productDB.createProduct(productData);
 
 		if (!newProduct) {
 			res.status(400).json({
@@ -70,7 +72,7 @@ productsRouter.post("/", async (req, res) => {
 			return;
 		}
 
-		const products = await productManager.getProducts();
+		const products = await productDB.getProducts();
 	
 		res.status(200).json({
 			success: true,
@@ -88,14 +90,14 @@ productsRouter.post("/", async (req, res) => {
 productsRouter.put("/:pid", async (req, res) => {
 	try {
 		const { pid } = req.params;
-		const { product } = req.body;
+		const productData = req.body;
 
-		const updatedProduct = await productManager.updateProduct(pid, product);
+		const updatedProduct = await productDB.updateProduct(pid, productData);
 
 		if (!updatedProduct) {
 			res.status(400).json({
 				success: false,
-				message: "Could not update the product",
+				message: "No se pudo actualizar el producto",
 			});
 			return;
 		}
@@ -117,9 +119,9 @@ productsRouter.delete("/:pid", async (req, res) => {
 	try {
 		const { pid } = req.params;
 
-		await productManager.deleteProductById(pid);
+		await productDB.deleteProductById(pid);
 
-		const products = await productManager.getProducts();
+		const products = await productDB.getProducts();
 
 		res.status(200).json({
 			success: true,

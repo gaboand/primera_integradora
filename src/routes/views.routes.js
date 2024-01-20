@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ProductsManager from "../services/fs/ProductManager.js";
-import Message from "../services/dbManager/message.js";
+import Message from "../services/dbManager/messageDB.js";
 import CartsManager from "../services/fs/CartManager.js";
 
 const viewsRouter = Router();

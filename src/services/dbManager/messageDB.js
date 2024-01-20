@@ -1,6 +1,6 @@
 import { MessagesModel } from "../../dao/models/message.js"; 
 
-export default class Message {
+export default class MessageDB {
 
     async createMessage(message) {
         const newMessage = await MessagesModel.create(message);
