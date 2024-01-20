@@ -14,8 +14,7 @@ export default class ProductsManager {
 			!product.description ||
 			!product.price ||
 			!product.code ||
-			!product.stock ||
-			!product.category
+			!product.stock 
 		) {
 			return false;
 		}
@@ -93,7 +92,7 @@ export default class ProductsManager {
 		}
 	}
 
-	async addProduct(product) {
+	async createProduct(product) {
 		try {
 			if (!this.allFieldsAreValid(product)) {
 				throw new Error("Missing data.");

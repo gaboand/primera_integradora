@@ -11,7 +11,7 @@ export default class CartsManager {
 		this.#cartsFilePath = filePath;
 	}
 
-	async addCart() {
+	async createCart() {
     try {
         const newCart = {
             id: crypto.randomUUID(),
@@ -27,7 +27,6 @@ export default class CartsManager {
         throw error;
     }
 	}
-
 	async getCarts() {
     try {
         if (fs.existsSync(this.#cartsFilePath)) {

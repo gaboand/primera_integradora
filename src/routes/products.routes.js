@@ -1,5 +1,5 @@
 import express from "express";
-import ProductManager from "../dao/services/ProductManager.js";
+import ProductManager from "../services/fs/ProductManager.js";
 
 const productManager = new ProductManager();
 const productsRouter = express.Router();
@@ -74,7 +74,6 @@ productsRouter.post("/", async (req, res) => {
 	
 		res.status(200).json({
 			success: true,
-			// newProduct: newProduct,
 			products,
 		});
 	} catch (error) {

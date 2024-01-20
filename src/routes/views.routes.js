@@ -1,25 +1,49 @@
 import { Router } from "express";
-import ProductsManager from "../dao/services/ProductManager.js";
+import ProductsManager from "../services/fs/ProductManager.js";
+import Message from "../services/dbManager/message.js";
+import CartsManager from "../services/fs/CartManager.js";
 
-const viewsRoutes = Router();
+const viewsRouter = Router();
 const productManager = new ProductsManager("src/products.json");
+const cartManager = new CartsManager("src/carts.json");
+const Messages = new Message();
 
-viewsRoutes.get("/fsproducts", async (req, res) => {
+viewsRouter.get("/products", async (req, res) => {
 	const products = await productManager.getProducts();
-	res.render("fsproducts", {
-		title: "Listado de productos FS",
+	res.render("products", {
+		title: "Listado de productos",
 		products: products,
 		style: "css/products.css",
 	});
 });
 
-viewsRoutes.get("/realtimeproducts", async (req, res) => {
+viewsRouter.get("/realtimeproducts", async (req, res) => {
 	const products = await productManager.getProducts();
-	res.render("realtimeproducts", {
+	res.render("realtime", {
 		title: "Productos en tiempo real",
 		products: products,
 		style: "css/products.css",
 	});
 });
 
-export default viewsRoutes;
+viewsRouter.get("/carts", async (req, res) => {
+	const carts = await cartManager.getCarts();
+
+	res.render("carts", {
+		title: "Cart",
+		carts: carts,
+		style: "css/cart.css",
+	});
+});
+
+
+viewsRouter.get("/chat", async (req, res) => {
+	const messages = await Messages.findMessages();
+
+	res.render("chat", {
+		title: "Chat",
+		messages: messages,
+		style: "css/chat.css",
+	});
+});
+export default viewsRouter;

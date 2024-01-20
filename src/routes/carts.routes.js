@@ -1,8 +1,8 @@
 import express from "express";
-import CartsManager from "../dao/services/CartManager.js";
+import CartsManager from "../services/fs/CartManager.js";
+
 
 const cartsManager = new CartsManager();
-
 const cartsRouter = express.Router();
 
 cartsRouter.post("/", async (req, res) => {
