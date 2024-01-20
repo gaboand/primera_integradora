@@ -5,24 +5,23 @@ const messagesRouter = Router();
 const messagesDB = new MessagesDB();
 
 
-messagesRouter.post ("/", async (req, res) => {
+messagesRouter.post("/", async (req, res) => {
   const { user, message } = req.body;
-  try{
+  try {
       const response = await messagesDB.createMessage({ user, message });
-      if(!response) {
-        res.status(400).json({
-          success: false,
-          message: "El mensaje no pudo ser creado",
-
-        });
-
+      if(response) {
         req.io.emit("new-message", response);
-        
-        return res.status (201).json ({success: true, message: "El mensaje fue creado"});
+        return res.status(201).json({ success: true, message: "El mensaje fue creado" });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "El mensaje no pudo ser creado"
+        });
       }
-    } catch(error) {
+  } catch(error) {
       return res.status(500).json({ success: false, message: error.message });
-    }
+  }
 });
+
 
 export default messagesRouter;
