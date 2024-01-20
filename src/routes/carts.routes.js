@@ -8,7 +8,8 @@ const cartDB = new CartDB();
 
 cartsRouter.post("/", async (req, res) => {
 	try {
-		await cartDB.createCart();
+		const cartData = {}
+		const cart = await cartDB.createCart(cartData);
 
 		res.status(200).json({
 			success: true,
@@ -24,28 +25,30 @@ cartsRouter.post("/", async (req, res) => {
 
 
 cartsRouter.get("/", async (req, res) => {
-	try {
-		const { limit } = req.query;
-		const products = await cartDB.getProducts();
+    try {
+        const { limit } = req.query;
+        const limitNumber = limit ? parseInt(limit, 10) : 10;
 
-		if (products.length < 1) {
-			res.status(404).json({
-				success: false,
-				message: "Carritos no encontrados",
-			});
-			return;
-		}
+        const carts = await cartDB.getCarts(limitNumber);
 
-		res.status(200).json({
-			success: true,
-			cart,
-		});
-	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		});
-	}
+        if (carts.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: "Carritos no encontrados",
+            });
+            return;
+        }
+
+        res.status(200).json({
+            success: true,
+            carts,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 });
 
 
@@ -64,7 +67,6 @@ cartsRouter.get("/:cid", async (req, res) => {
 
 		res.status(200).json({
 			success: true,
-			message: "Carrito enviado",
 			cart,
 		});
 	} catch (error) {
@@ -75,29 +77,39 @@ cartsRouter.get("/:cid", async (req, res) => {
 	}
 });
 
-cartsRouter.post("/:cid/product/:pid", async (req, res) => {
-	try {
-		const { cid, pid } = req.params;
+cartsRouter.post("/:cid/product", async (req, res) => {
+    try {
+        const { cid } = req.params;
+        const { pid, quantity, otherDetails } = req.body;
 
-		const cart = await cartDB.addProductToCart(cid, pid);
-		if (!cart) {
-			res.status(400).json({
-				success: false,
-				message: "Product ",
-			});
-			return;
-		}
-		res.status(200).json({
-			success: true,
-			message: `Producto ${pid} agregado al carrito ${cid}`,
-			cart,
-		});
-	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		});
-	}
+        if (!pid || !quantity) {
+            res.status(400).json({
+                success: false,
+                message: "Faltan datos del producto (ID y cantidad).",
+            });
+            return;
+        }
+
+        const cart = await cartDB.addProductToCart(cid, pid, quantity, otherDetails);
+        if (!cart) {
+            res.status(404).json({
+                success: false,
+                message: `No se pudo agregar el producto ${pid} al carrito ${cid}.`,
+            });
+            return;
+        }
+        res.status(200).json({
+            success: true,
+            message: `Producto ${pid} agregado al carrito ${cid}.`,
+            cart,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 });
+
 
 export default cartsRouter;

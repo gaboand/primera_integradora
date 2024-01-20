@@ -6,20 +6,32 @@ export default class ProductDB {
     }
 
     async getProducts() {
+    try{
         const product = await ProductsModel.find().lean();
         return product;
+    } catch (error) {
+        throw error;
+    }
     }
 
     async getProductsById(id) {
+    try{
         const product = await ProductsModel.findById(id).lean();
         return product;
+    } catch (error) {
+        throw error;
+    }
     }
 
     async createProduct(product) {
+    try{
         const newProduct = new ProductsModel(product);
         const products = await newProduct.save();
         return product;
+    } catch (error) {
+        throw error;
     }
+}
 
     async updateProduct(id, product) {
         try {
@@ -41,8 +53,12 @@ export default class ProductDB {
     
 
     async deleteProductById(id,productsUpdates) {
+    try{
         const product = await ProductsModel.findByIdAndDelete(id);
         return product;
+    } catch (error) {
+        throw error;
+    }
     }
 };
 
