@@ -111,5 +111,47 @@ cartsRouter.post("/:cid/product", async (req, res) => {
     }
 });
 
+cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
+    try {
+        const { cid, pid } = req.params;
+        const deleted = await cartDB.deleteById(cid, pid);
+        if (!deleted) {
+            res.status(404).json({
+                success: false,
+                message: `No se pudo borrar el producto ${pid} del carrito ${cid}.`,
+            });
+            return;
+        }
+        res.status(200).json({
+            success: true,
+            message: `Producto ${pid} borrado del carrito ${cid}.`,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+
+cartsRouter.delete("/:cid", async (req, res) => {
+    try {
+        const { cid } = req.params;
+        
+        await cartDB.deleteCartById(cid);
+        
+        const carts  = await cartDB.getProducts();
+        res.status(200).json({
+            success: true,
+            carts,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+})
+})
+
 
 export default cartsRouter;

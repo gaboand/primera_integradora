@@ -10,7 +10,7 @@ messagesRouter.post("/", async (req, res) => {
   try {
       const response = await messagesDB.createMessage({ user, message });
       if(response) {
-        req.io.emit("new-message", response);
+        req.io.emit("newMessage", response);
         return res.status(201).json({ success: true, message: "El mensaje fue creado" });
       } else {
         return res.status(400).json({

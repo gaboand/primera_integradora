@@ -25,10 +25,10 @@ viewsRouter.get("/products", async (req, res) => {
 });
 
 viewsRouter.get("/realtimeproducts", async (req, res) => {
-	const products = await productDB.getProducts();
+	const product = await productDB.getProducts();
 	res.render("realtime", {
 		title: "Productos en tiempo real",
-		products: products,
+		product: product,
 		style: "css/products.css",
 	});
 });

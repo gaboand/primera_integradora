@@ -48,7 +48,7 @@ export default class CartDB {
     }
     
 
-    async deleteById(id) {
+    async deleteCartById(id) {
     try{
         const cart = await CartModel.findByIdAndDelete(id);
         return cart;
@@ -57,4 +57,3 @@ export default class CartDB {
     }
     };
 };
-

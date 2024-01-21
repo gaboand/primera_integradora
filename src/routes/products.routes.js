@@ -14,7 +14,7 @@ productsRouter.get("/", async (req, res) => {
 		if (products.length < 1) {
 			res.status(404).json({
 				success: false,
-				message: "Could not retrieve products",
+				message: "Los productos no se cargando",
 			});
 			return;
 		}
@@ -40,7 +40,7 @@ productsRouter.get("/:pid", async (req, res) => {
 		if (!product) {
 			res.status(404).json({
 				success: false,
-				message: "Product not found",
+				message: "Producto no encontrado",
 			});
 			return;
 		}
@@ -67,7 +67,7 @@ productsRouter.post("/", async (req, res) => {
 		if (!newProduct) {
 			res.status(400).json({
 				success: false,
-				message: "Could not add the product",
+				message: "NO se pudo crear el producto",
 			});
 			return;
 		}

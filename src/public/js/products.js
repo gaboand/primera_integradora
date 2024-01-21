@@ -22,7 +22,7 @@ addProductBtn.addEventListener("click", async () => {
 
 	await fetch("/api/products", {
 		method: "POST",
-		body: JSON.stringify({ product }),
+		body: JSON.stringify(product),
 		headers: {
 			"Content-Type": "application/json",
 		},
@@ -81,7 +81,7 @@ function reloadList(products) {
                 <p>${product.price}</p>
                 <p>${product.stock}</p>
                 <p>${product.code}</p>
-                <p>${product.id}</p>
+                <p>${product._id}</p>
             </div>`;
 		productList.appendChild(card);
 	});
