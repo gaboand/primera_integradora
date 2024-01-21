@@ -132,6 +132,7 @@ cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
             message: error.message,
         });
     }
+})
 
 cartsRouter.delete("/:cid", async (req, res) => {
     try {
@@ -139,7 +140,7 @@ cartsRouter.delete("/:cid", async (req, res) => {
         
         await cartDB.deleteCartById(cid);
         
-        const carts  = await cartDB.getProducts();
+        const carts  = await cartDB.getCarts();
         res.status(200).json({
             success: true,
             carts,
@@ -150,7 +151,6 @@ cartsRouter.delete("/:cid", async (req, res) => {
             message: error.message,
         });
     }
-})
 })
 
 

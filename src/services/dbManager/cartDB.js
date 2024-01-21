@@ -49,11 +49,17 @@ export default class CartDB {
     
 
     async deleteCartById(id) {
-    try{
-        const cart = await CartModel.findByIdAndDelete(id);
-        return cart;
-    } catch (error) {
-        throw error;
+        try {
+            const cart = await CartModel.findById(id);
+            if (!cart) {
+                return null;
+            }
+    
+            const pruebaID = await CartModel.findByIdAndDelete(id);
+            return cart;
+        } catch (error) {
+            throw error;
+        }
     }
-    };
+    
 };

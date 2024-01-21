@@ -11,5 +11,3 @@ const CartSchema = new mongoose.Schema({
 });
 
 export const CartModel = mongoose.model(cartCollection, CartSchema);
-
-
