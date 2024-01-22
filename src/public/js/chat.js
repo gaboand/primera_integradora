@@ -6,6 +6,7 @@ let user;
 const socket = io();
 
 document.addEventListener("DOMContentLoaded", () => {
+	console.log("DOM completamente cargado y analizado");
 	const userInput = prompt("Ingresa tu usuario") || "";
 
 	if (!userInput) {
@@ -31,7 +32,7 @@ sendMessageBtn.addEventListener("click", async () => {
 	})
 		.then((res) => res.json())
 		.then((data) => {
-			if (data.sucess == false) {
+			if (data.success == false) {
 				alert("No se pudo enviar el mensaje");
 				return;
 			}
