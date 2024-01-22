@@ -59,7 +59,7 @@ viewsRouter.get("/carts/:id", async (req, res) => {
         const cartId = req.params.id;
         const detailedCart = await cartDB.getCartWithProductDetails(cartId);
 
-		console.log(detailedCart);  // Verificar la estructura de detailedCart}
+		console.log(detailedCart);
         res.render("carts", {
             title: "Detalle del Carrito",
             detailedCart: detailedCart,

@@ -89,10 +89,8 @@ export default class CartDB {
             const products = await ProductsModel.find({_id: { $in: productIds }}).lean();
     
             const detailedCart = cart.products.map(item => {
-                // Asegurarse de que ambos ID se comparen como strings
                 const product = products.find(p => p._id.toString() === item.productId.toString());
     
-                // Manejar el caso donde el producto no se encuentra
                 if (!product) {
                     return {
                         ...item,
@@ -103,7 +101,6 @@ export default class CartDB {
                     };
                 }
     
-                // Retornar los detalles del producto junto con la cantidad del carrito
                 return {
                     ...item,
                     title: product.title,
