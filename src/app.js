@@ -48,5 +48,4 @@ startMongoConnection()
     await mongoose.connect(DB_URL);
   }
 
-
 export default app;

@@ -41,6 +41,18 @@ addProductBtn.addEventListener("click", async () => {
 	document.getElementById("addForm").reset();
 });
 
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const response = await fetch('/api/products');
+        const data = await response.json();
+        if (data.success) {
+            reloadList(data.data);
+        }
+    } catch (error) {
+        console.error("Error al cargar los productos:", error);
+    }
+});
+
 
 deleteProductBtn.addEventListener("click", async () => {
 	const id = document.getElementById("productId");
