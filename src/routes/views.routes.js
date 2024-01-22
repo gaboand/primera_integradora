@@ -53,4 +53,21 @@ viewsRouter.get("/chat", async (req, res) => {
 		style: "css/chat.css",
 	});
 });
+
+viewsRouter.get("/carts/:id", async (req, res) => {
+    try {
+        const cartId = req.params.id;
+        const detailedCart = await cartDB.getCartWithProductDetails(cartId);
+
+		console.log(detailedCart);  // Verificar la estructura de detailedCart}
+        res.render("carts", {
+            title: "Detalle del Carrito",
+            detailedCart: detailedCart,
+            style: "css/cart.css",
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 export default viewsRouter;

@@ -1,4 +1,5 @@
 import { CartModel } from "../../dao/models/cart.js"; 
+import { ProductsModel } from "../../dao/models/product.js";
 
 export default class CartDB {
     async createCart(cart) {
@@ -46,7 +47,22 @@ export default class CartDB {
         throw error;
     }
     }
-    
+
+    async deleteProductFromCart(cid, productEntryId) {
+        try {
+            const cart = await CartModel.findById(cid);
+            const productIndex = cart.products.findIndex(p => p._id.equals(productEntryId));
+            if (productIndex >= 0) {
+                cart.products.splice(productIndex, 1);
+            } else {
+                throw new Error("Producto no encontrado en el carrito");
+            }
+            const updatedCart = await cart.save();
+            return updatedCart;
+        } catch (error) {
+            throw error;
+        }
+    }
 
     async deleteCartById(id) {
         try {
@@ -61,5 +77,48 @@ export default class CartDB {
             throw error;
         }
     }
+
+    async getCartWithProductDetails(cartId) {
+        try {
+            const cart = await CartModel.findById(cartId).lean();
+            if (!cart) {
+                throw new Error("Carrito no encontrado");
+            }
+    
+            const productIds = cart.products.map(p => p.productId);
+            const products = await ProductsModel.find({_id: { $in: productIds }}).lean();
+    
+            const detailedCart = cart.products.map(item => {
+                // Asegurarse de que ambos ID se comparen como strings
+                const product = products.find(p => p._id.toString() === item.productId.toString());
+    
+                // Manejar el caso donde el producto no se encuentra
+                if (!product) {
+                    return {
+                        ...item,
+                        title: "Producto no encontrado",
+                        description: "",
+                        price: 0,
+                        thumbnail: ""
+                    };
+                }
+    
+                // Retornar los detalles del producto junto con la cantidad del carrito
+                return {
+                    ...item,
+                    title: product.title,
+                    description: product.description,
+                    price: product.price,
+                    thumbnail: product.thumbnail
+                };
+            });
+    
+            return detailedCart;
+        } catch (error) {
+            throw error;
+        }
+    }
     
 };
+
+
